@@ -36,3 +36,10 @@ jobs:
         version_label: 'release-${{ github.sha }}'
         region: ${{ env.AWS_DEFAULT_REGION }}
         deployment_package: deploy_package.zip
+
+    - name: Upload artifact
+      if: always()  # Ensure this step runs even if the deployment fails
+      uses: actions/upload-artifact@v7
+      with:
+        name: deploy-package
+        path: deploy_package.zip
