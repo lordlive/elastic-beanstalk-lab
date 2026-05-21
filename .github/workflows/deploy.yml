@@ -1,0 +1,38 @@
+name: CI-CD Pipeline to Elastic Beanstalk
+# Pipeline to Elastic Beanstalk
+
+on:
+  push:
+
+env:
+  AWS_DEFAULT_REGION: us-east-1
+  APPLICATION_NAME: cmtr-u3vaje75-app  # Replace with the actual application name
+  ENVIRONMENT_NAME: cmtr-u3vaje75-env  # Replace with the actual environment name
+
+jobs:
+  deploy_to_aws:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Downloading the code from the repository to the virtual machine GitHub
+    - name: Checkout Source Code
+      uses: actions/checkout@v6
+
+    # 2. Packaging the application into a ZIP archive (Beanstalk accepts code as an archive)
+    # Ignoring the .git folder and the workflow file to keep the archive clean
+    - name: Create Deployment Package
+      run: zip -r deploy_package.zip . -x "*.git*" ".github*"
+
+    # 3. Deploying to AWS using the official action
+    - name: Deploy to AWS Elastic Beanstalk
+      uses: einaregilsson/beanstalk-deploy@v23
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}  # Optional, if using temporary credentials
+        application_name: ${{ env.APPLICATION_NAME }}
+        environment_name: ${{ env.ENVIRONMENT_NAME }}
+        version_label: 'release-${{ github.sha }}'
+        region: ${{ env.AWS_DEFAULT_REGION }}
+        deployment_package: deploy_package.zip
+
