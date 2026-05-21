@@ -5,8 +5,6 @@ on:
   push:
 
 env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: us-east-1
   APPLICATION_NAME: cmtr-u3vaje75-app  # Replace with the actual application name
   ENVIRONMENT_NAME: cmtr-u3vaje75-env  # Replace with the actual environment name
@@ -31,6 +29,7 @@ jobs:
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}  # Optional, if using temporary credentials
         application_name: ${{ env.APPLICATION_NAME }}
         environment_name: ${{ env.ENVIRONMENT_NAME }}
         version_label: 'release-${{ github.sha }}'
