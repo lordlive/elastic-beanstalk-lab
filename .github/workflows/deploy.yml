@@ -5,11 +5,9 @@ on:
   push:
 
 env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_REGION: eu-central-1
-  APPLICATION_NAME: my-flask-app  # Replace with the actual application name
-  ENVIRONMENT_NAME: development  # Replace with the actual environment name
+  AWS_DEFAULT_REGION: us-east-1
+  APPLICATION_NAME: cmtr-u3vaje75-app  # Replace with the actual application name
+  ENVIRONMENT_NAME: cmtr-u3vaje75-env  # Replace with the actual environment name
 
 jobs:
   deploy_to_aws:
@@ -37,9 +35,3 @@ jobs:
         region: ${{ env.AWS_DEFAULT_REGION }}
         deployment_package: deploy_package.zip
 
-    # - name: Upload artifact
-    #   if: always()  # Ensure this step runs even if the deployment fails
-    #   uses: actions/upload-artifact@v7
-    #   with:
-    #     name: deploy-package
-    #     path: deploy_package.zip
